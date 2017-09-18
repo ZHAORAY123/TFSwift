@@ -128,10 +128,17 @@ extension LJOpreationManager:URLSessionDataDelegate
                 print("URLSessionDataDelegate----数据下载完毕")
                 
                 LJCacheDataManage.shared.setMemoryCache((task.currentRequest?.url?.absoluteString)!,data as Data)
-                
-               let a =  LJFileManager.shared.writeFile((task.currentRequest?.url?.absoluteString)!,data as NSData)
-                
-                print("-----写入文件成功\(a)")
+                if #available(iOS 8.0, *) {
+                    DispatchQueue.global().async {
+                        //图片缓存，根据唯一的url来作为存储数据的名称
+                        let a =  LJFileManager.shared.writeFile((task.currentRequest?.url?.absoluteString)!,data as NSData)
+                        
+                        print("-----写入文件成功\(a)")
+                    }
+                } else {
+                    // Fallback on earlier versions
+                }
+              
                 
                 //将接收的数据结果回调到前台，用于进度展示
                 weakSelf?.ljcallBackClosure!(data as Data ,nil)

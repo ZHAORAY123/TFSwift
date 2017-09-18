@@ -31,10 +31,4 @@ class LJCacheDataManage: NSObject{
             memoryCache[urlStr] = data
         }
     }
-    
-    func saveDataToDisk(url : String){
-        let homeStr = NSHomeDirectory() as String
-        
-        
-    }
 }
